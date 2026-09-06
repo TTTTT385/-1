@@ -60,11 +60,23 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /^https:\/\/images\.unsplash\.com\/.*/i,
+            // Team crests and player headshots barely change.
+            urlPattern: /^https:\/\/a\d?\.espncdn\.com\/.*/i,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'image-cache',
-              expiration: { maxEntries: 40, maxAgeSeconds: 60 * 60 * 24 * 14 },
+              cacheName: 'espn-images',
+              expiration: { maxEntries: 300, maxAgeSeconds: 60 * 60 * 24 * 30 },
+            },
+          },
+          {
+            // Serve the last scoreboard when offline, but always try the network first.
+            urlPattern: /^https:\/\/site(\.web)?\.api\.espn\.com\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'espn-api',
+              networkTimeoutSeconds: 8,
+              expiration: { maxEntries: 80, maxAgeSeconds: 60 * 60 * 6 },
+              cacheableResponse: { statuses: [0, 200] },
             },
           },
         ],
