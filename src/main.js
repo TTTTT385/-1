@@ -169,7 +169,7 @@ function renderMatches() {
                 <strong>${teamName(m.home)}</strong>
               </div>
               <div class="scoreboard">
-                <div class="score">${scoreText(m)}</div>
+                <div class="score" dir="ltr">${scoreText(m)}</div>
                 <div class="minute ${m.status === 'live' ? 'live' : ''}">${m.minute}</div>
               </div>
               <div class="team-side away">
@@ -429,7 +429,7 @@ function renderMatchDetail() {
         <div class="info-rows">
           <div class="info-row"><span>סטטוס</span><span>${match.status === 'live' ? 'בשידור חי' : match.status === 'finished' ? 'הסתיים' : 'ממתין'}</span></div>
           <div class="info-row"><span>דקה</span><span>${match.minute}</span></div>
-          <div class="info-row"><span>תוצאה</span><span>${scoreText(match)}</span></div>
+          <div class="info-row"><span>תוצאה</span><span dir="ltr">${scoreText(match)}</span></div>
         </div>
       </div>
     `
@@ -459,7 +459,7 @@ function renderMatchDetail() {
             <strong>${teamName(match.home)}</strong>
           </div>
           <div class="scoreboard">
-            <div class="score">${scoreText(match)}</div>
+            <div class="score" dir="ltr">${scoreText(match)}</div>
             <div class="minute ${match.status === 'live' ? 'live' : ''}">${match.minute}</div>
           </div>
           <div class="team-side away">
@@ -497,8 +497,8 @@ function renderMore() {
         </p>
         <button class="btn-primary" data-action="install" style="width:100%">הוסף לדף הבית</button>
         <div class="ios-help ${state.showIosHelp ? 'show' : ''}" id="ios-help">
-          באייפון: לחצו על כפתור השיתוף <strong>□↑</strong> בספארי, ואז בחרו
-          <strong>״הוסף למסך הבית״</strong>.
+          <strong>אייפון (Safari):</strong> לחצו על כפתור השיתוף ואז על ״הוסף למסך הבית״.<br />
+          <strong>אנדרואיד (Chrome):</strong> תפריט ⋮ ואז ״התקן אפליקציה״ / ״הוסף למסך הבית״.
         </div>
       </div>
       <div class="section-head"><h2>מועדפים</h2></div>
@@ -513,7 +513,7 @@ function renderMore() {
                 <button class="match-row" data-open-match="${m.id}">
                   <div class="match-teams">
                     <div class="team-side">${crestHtml(m.home)}<strong>${teamName(m.home)}</strong></div>
-                    <div class="scoreboard"><div class="score">${scoreText(m)}</div></div>
+                    <div class="scoreboard"><div class="score" dir="ltr">${scoreText(m)}</div></div>
                     <div class="team-side away"><strong>${teamName(m.away)}</strong>${crestHtml(m.away)}</div>
                   </div>
                 </button>
@@ -578,7 +578,7 @@ function render() {
   else content = renderMatches()
 
   app.innerHTML = `
-    <div class="app-shell">
+    <div class="app-shell ${state.showInstall ? 'with-install-banner' : ''} ${hideNav ? 'no-nav' : ''}">
       ${content}
       ${hideNav ? '' : renderNav()}
       ${renderInstallBanner()}
@@ -609,17 +609,11 @@ async function handleInstall() {
     render()
     return
   }
-  if (isIos()) {
-    state.showIosHelp = true
-    state.view = 'more'
-    state.showInstall = false
-    render()
-    return
-  }
   state.showIosHelp = true
   state.view = 'more'
+  state.showInstall = false
   render()
-  alert('בדפדפן: פתחו את תפריט הדפדפן ובחרו ״הוסף למסך הבית״ / Add to Home Screen.')
+  document.getElementById('ios-help')?.scrollIntoView({ block: 'center' })
 }
 
 function bindGlobalEvents() {
