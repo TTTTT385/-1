@@ -162,6 +162,22 @@ img {
   -webkit-overflow-scrolling: touch;
 }
 
+.app-shell.no-nav .view-scroll {
+  padding-bottom: calc(var(--safe-bottom) + 24px);
+}
+
+.app-shell.with-install-banner .view-scroll {
+  padding-bottom: calc(var(--nav-h) + var(--safe-bottom) + 130px);
+}
+
+.app-shell.with-install-banner.no-nav .view-scroll {
+  padding-bottom: calc(var(--safe-bottom) + 140px);
+}
+
+.app-shell.no-nav .install-banner {
+  bottom: calc(var(--safe-bottom) + 12px);
+}
+
 .section-head {
   display: flex;
   align-items: baseline;
